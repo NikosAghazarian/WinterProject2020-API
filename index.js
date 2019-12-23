@@ -8,7 +8,7 @@ let hostAddr = 'localhost'
 
 
 app.use('/employees', routes.employees);
-
+app.use('/',routes.home);
 
 app.listen(port, hostAddr);
 console.log('Express app listening on ' + hostAddr + ':' + port);
