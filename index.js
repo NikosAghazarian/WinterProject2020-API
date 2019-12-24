@@ -7,8 +7,10 @@ let port = 3000;
 let hostAddr = 'localhost'
 
 
-app.use('/employees', routes.employees);
-app.use('/',routes.home);
+app.use('/employee', routes.employees);
+//app.use('/product', routes.product);
+app.use('/',routes.docs);
+
 
 app.listen(port, hostAddr);
 console.log('Express app listening on ' + hostAddr + ':' + port);

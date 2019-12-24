@@ -1,8 +1,9 @@
-const mysql = require('mysql');
+const QueryRelay = require('../query-relay');
 
 exports.employees = (req, res, next) => {
+    
     res.send('results')
 }
-exports.home = (req, res, next) => {
+exports.docs = (req, res, next) => {
     res.send('API DOCs');
 }
