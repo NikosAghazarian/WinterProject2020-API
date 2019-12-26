@@ -1,5 +1,6 @@
 const express = require('express');
-const routes = require('./routes');
+
+import { Routes } from "./routes.js";
 
 
 let app = express();
@@ -7,9 +8,9 @@ let port = 3000;
 let hostAddr = 'localhost'
 
 
-app.use('/employee', routes.employees);
+app.use('/employee', Routes.employees);
 //app.use('/product', routes.product);
-app.use('/',routes.docs);
+app.use('/', Routes.docs);
 
 
 app.listen(port, hostAddr);

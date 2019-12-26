@@ -1,30 +1,46 @@
-const CreateController = require('./controllers/create-controller');
-const ReadController = require('./controllers/read-controller');
-const UpdateController = require('./controllers/update-controller');
-const DeleteController = require('./controllers/delete-controller');
+//const DocsController = require('./controllers/docs-controller');
+//const ProductController = require('./controllers/product-controller');
+//const EmployeeController = require('./controllers/employee-controller');
+//import { DocsController } from "./controllers/docs-controller.js";
+//import { ProductController } from "./controllers/product-controller";
+//import { EmployeeController } from "./controllers/employee-controller.";
 
-const docs = require('express').Router();
-const employee = require('express').Router();
+const Router = require('express').Router;
 
-
-docs.get('/C/', CreateController.docs);
-docs.get('/R/', ReadController.docs);
-docs.get('/U/', UpdateController.docs);
-docs.get('/D/', DeleteController.docs);
-
-employee.get('/C/', CreateController.docs);
-employee.get('/R/', ReadController.docs);
-employee.get('/U/', UpdateController.docs);
-employee.get('/D/', DeleteController.docs);
-
-product.get('/C/', CreateController.docs);
-product.get('/R/', ReadController.docs);
-product.get('/U/', UpdateController.docs);
-product.get('/D/', DeleteController.docs);
+import { 
+    DocsController, 
+    ProductController, 
+    EmployeeController 
+} from "./controllers/index.js";
 
 
-module.exports = {
-    product: product,
-    employee: employee,
-    docs: docs
+const docsRouter = Router();
+const productRouter = Router();
+const employeeRouter = Router();
+
+
+docsRouter.get('/C/', DocsController.create);
+docsRouter.get('/R/', DocsController.read);
+docsRouter.get('/U/', DocsController.update);
+docsRouter.get('/D/', DocsController.delete);
+
+productRouter.get('/C/', ProductController.create);
+productRouter.get('/R/', ProductController.read);
+productRouter.get('/U/', ProductController.update);
+productRouter.get('/D/', ProductController.delete);
+
+employeeRouter.get('/C/', EmployeeController.create);
+employeeRouter.get('/R/', EmployeeController.read);
+employeeRouter.get('/U/', EmployeeController.update);
+employeeRouter.get('/D/', EmployeeController.delete);
+
+
+export class Routes {
+
+    docs = docsRouter;
+    product = productRouter;
+    employee = employeeRouter;
+
+    constructor() {}
+
 }

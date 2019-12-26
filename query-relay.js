@@ -1,5 +1,8 @@
 const mysql = require('mysql');
 
-module.exports = QueryRelay = () => {
+export class QueryRelay {
+    
+    constructor() {}
 
-};
+
+}
