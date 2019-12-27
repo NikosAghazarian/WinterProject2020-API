@@ -4,8 +4,11 @@
 //import { DocsController } from "./controllers/docs-controller.js";
 //import { ProductController } from "./controllers/product-controller";
 //import { EmployeeController } from "./controllers/employee-controller.";
-
-const Router = require('express').Router;
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const express = require('express');
+//import { Express } from "express";
+let Router = express.Router;
 
 import { 
     DocsController, 
@@ -13,26 +16,26 @@ import {
     EmployeeController 
 } from "./controllers/index.js";
 
+const DocsControllerInstance = new DocsController();
+const ProductControllerInstance = new ProductController();
+const EmployeeControllerInstance = new EmployeeController();
 
 const docsRouter = Router();
 const productRouter = Router();
 const employeeRouter = Router();
 
 
-docsRouter.get('/C/', DocsController.create);
-docsRouter.get('/R/', DocsController.read);
-docsRouter.get('/U/', DocsController.update);
-docsRouter.get('/D/', DocsController.delete);
+docsRouter.get('/', DocsControllerInstance.DisplayDocs);
 
-productRouter.get('/C/', ProductController.create);
-productRouter.get('/R/', ProductController.read);
-productRouter.get('/U/', ProductController.update);
-productRouter.get('/D/', ProductController.delete);
+productRouter.get('/C/', ProductControllerInstance.Create);
+productRouter.get('/R/', ProductControllerInstance.Read);
+productRouter.get('/U/', ProductControllerInstance.Update);
+productRouter.get('/D/', ProductControllerInstance.Delete);
 
-employeeRouter.get('/C/', EmployeeController.create);
-employeeRouter.get('/R/', EmployeeController.read);
-employeeRouter.get('/U/', EmployeeController.update);
-employeeRouter.get('/D/', EmployeeController.delete);
+employeeRouter.get('/C/', EmployeeControllerInstance.Create);
+employeeRouter.get('/R/', EmployeeControllerInstance.Read);
+employeeRouter.get('/U/', EmployeeControllerInstance.Update);
+employeeRouter.get('/D/', EmployeeControllerInstance.Delete);
 
 
 export class Routes {
