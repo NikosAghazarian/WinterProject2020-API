@@ -11,8 +11,9 @@ export class QueryRelay {
     DbQuery(query, queryCallback) {
         const connection = mysql.createConnection({
             host: ServerAuth.host,
+            database: ServerAuth.database,
             user: ServerAuth.user,
-            password: ServerAuth.password,
+            password: ServerAuth.password
         });
         connection.connect();
         connection.query(query, queryCallback);

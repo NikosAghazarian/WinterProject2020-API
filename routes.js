@@ -1,13 +1,7 @@
-//const DocsController = require('./controllers/docs-controller');
-//const ProductController = require('./controllers/product-controller');
-//const EmployeeController = require('./controllers/employee-controller');
-//import { DocsController } from "./controllers/docs-controller.js";
-//import { ProductController } from "./controllers/product-controller";
-//import { EmployeeController } from "./controllers/employee-controller.";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const express = require('express');
-//import { Express } from "express";
+
 let Router = express.Router;
 
 import { 
@@ -25,6 +19,7 @@ const productRouter = Router();
 const employeeRouter = Router();
 
 
+// Should have done this with POST, GET, PATCH, and DELETE
 docsRouter.get('/', DocsControllerInstance.DisplayDocs);
 
 productRouter.get('/C/', ProductControllerInstance.Create);

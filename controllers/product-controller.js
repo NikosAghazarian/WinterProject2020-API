@@ -11,7 +11,7 @@ export class ProductController {
     }
 
     Read(req, res, next) {
-
+        
     }
 
     Update(req, res, next) {
