@@ -1,4 +1,5 @@
 import { QueryRelay } from "../query-relay.js";
+import { cpus } from "os";
 let dbRelay = new QueryRelay();
 
 export class EmployeeController {
@@ -16,15 +17,36 @@ export class EmployeeController {
             }
         */
         let names = JSON.parse(req.query.names).names;
-        
-        
-        
-        let insertTemplate = `INSERT INTO employee (name) VALUES (${element})`;
+        let insertTemplate = `INSERT INTO employee (name) VALUES`;
+
+        names.forEach((nameToAdd) => {
+            insertTemplate = insertTemplate.concat(` ('${nameToAdd}'),`);
+        });
+        insertTemplate = insertTemplate.slice(0, -1);
+
+        dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
+            if (error) {
+                res.send(error);
+                console.log(error);
+            }
+            else {
+                console.log(results);
+                res.send('Query OK');
+            }
+        });
     }
 
     Read(req, res, next) {
         let selectTemplate = `SELECT * FROM employee`;
-        
+        dbRelay.DbQuery(selectTemplate, (error, results, fields) => {
+            if (error) {
+                res.send(error);
+                console.log(error);
+            }
+            else {
+                res.send(results);
+            }
+        });
     }
 
     Update(req, res, next) {
