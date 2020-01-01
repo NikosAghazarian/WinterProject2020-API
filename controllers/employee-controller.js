@@ -1,10 +1,11 @@
 import { QueryRelay } from "../query-relay.js";
 import { cpus } from "os";
-let dbRelay = new QueryRelay();
+
 
 export class EmployeeController {
 
     constructor() {}
+    dbRelay = new QueryRelay();
 
     Create(req, res, next) {
         /*req.query.names
@@ -24,7 +25,7 @@ export class EmployeeController {
         });
         insertTemplate = insertTemplate.slice(0, -1);
 
-        dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
+        this.dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
             if (error) {
                 res.send(error);
                 console.log(error);
@@ -51,17 +52,16 @@ export class EmployeeController {
 
     Update(req, res, next) {
         let updateTemplate = `UPDATE employee $SET_WHERE$`;
-    }
 
-    Delete(req, res, next) {
-        
-    }
-
-    GenerateSetWhere(newVal, originalVal) {
         let setWhereTemplate = `
         SET 'name' = ${newVal} 
         WHERE 'name' = ${originalVal}`;
         
         return setWhereTemplate;
     }
+
+    Delete(req, res, next) {
+        
+    }
+
 }
