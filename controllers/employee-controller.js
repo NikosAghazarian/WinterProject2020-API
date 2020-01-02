@@ -1,11 +1,10 @@
 import { QueryRelay } from "../query-relay.js";
-import { cpus } from "os";
-
+let dbRelay = new QueryRelay();
 
 export class EmployeeController {
 
     constructor() {}
-    dbRelay = new QueryRelay();
+    
 
     Create(req, res, next) {
         /*req.query.names
@@ -19,13 +18,13 @@ export class EmployeeController {
         */
         let names = JSON.parse(req.query.names).names;
         let insertTemplate = `INSERT INTO employee (name) VALUES`;
-
+        
         names.forEach((nameToAdd) => {
             insertTemplate = insertTemplate.concat(` ('${nameToAdd}'),`);
         });
         insertTemplate = insertTemplate.slice(0, -1);
 
-        this.dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
+        dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
             if (error) {
                 res.send(error);
                 console.log(error);

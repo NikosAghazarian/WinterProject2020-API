@@ -1,21 +1,31 @@
 import { QueryRelay } from "../query-relay.js";
-
+let dbRelay = new QueryRelay();
 
 export class ProductController {
 
     constructor() {}
-    dbRelay = new QueryRelay();
+    
     
     Create(req, res, next) {
+        /*req.query.rows
+            {
+                "rows": [
+                    {"name": "screw", "expectedyield": 1, "minyield": 0, "ttl": 275},
+                    {"name": "wooden dowel", "expectedyield": 5, "minyield": 0, "ttl": 107},
+                    ...
+                ]
+            }
+            
+        */
         let rows = JSON.parse(req.query.rows).rows;
-        let insertTemplate = `INSERT INTO product (name) VALUES`;
+        let insertTemplate = `INSERT INTO product (name, expectedyield, minyield, ttl) VALUES`;
 
-        rows.forEach((nameToAdd) => {
-            insertTemplate = insertTemplate.concat(` ('${nameToAdd}'),`);
+        rows.forEach((row) => {
+            insertTemplate = insertTemplate.concat(` ('${row.name}', '${row.expectedyield}', '${row.minyield}', '${row.ttl}'),`);
         });
         insertTemplate = insertTemplate.slice(0, -1);
 
-        this.dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
+        dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
             if (error) {
                 res.send(error);
                 console.log(error);
