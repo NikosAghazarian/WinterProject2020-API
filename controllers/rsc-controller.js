@@ -7,11 +7,20 @@ export class RscController {
     
     
     Create(req, res, next) {
+        /*req.query.rows
+            {
+                "rows": [
+                    {"name": "iron filament", "expectedyield": 1, "minyield": 0, "runsize": 50},
+                    {"name": "wood planks", "expectedyield": 5, "minyield": 0, "runsize": 20},
+                    ...
+                ]
+            }
+        */
         let rows = JSON.parse(req.query.rows).rows;
-        let insertTemplate = `INSERT INTO product (name) VALUES`;
+        let insertTemplate = `INSERT INTO rsc (name, expectedyield, minyield, runsize) VALUES`;
 
-        rows.forEach((nameToAdd) => {
-            insertTemplate = insertTemplate.concat(` ('${nameToAdd}'),`);
+        rows.forEach((row) => {
+            insertTemplate = insertTemplate.concat(` ('${row.name}', '${row.expectedyield}', '${row.minyield}', '${row.runsize}'),`);
         });
         insertTemplate = insertTemplate.slice(0, -1);
 
@@ -28,7 +37,7 @@ export class RscController {
     }
 
     Read(req, res, next) {
-        let selectTemplate = `SELECT * FROM product`;
+        let selectTemplate = `SELECT * FROM rsc`;
         dbRelay.DbQuery(selectTemplate, (error, results, fields) => {
             if (error) {
                 res.send(error);

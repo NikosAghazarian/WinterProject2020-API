@@ -7,8 +7,17 @@ export class LossReasonController {
 
     
     Create(req, res, next) {
+        /*req.query.names
+            {
+                names: [
+                    "name1",
+                    "name2",
+                    ...
+                ]
+            }
+        */
         let rows = JSON.parse(req.query.rows).rows;
-        let insertTemplate = `INSERT INTO product (name) VALUES`;
+        let insertTemplate = `INSERT INTO lossreason (name) VALUES`;
 
         rows.forEach((nameToAdd) => {
             insertTemplate = insertTemplate.concat(` ('${nameToAdd}'),`);
@@ -28,7 +37,7 @@ export class LossReasonController {
     }
 
     Read(req, res, next) {
-        let selectTemplate = `SELECT * FROM product`;
+        let selectTemplate = `SELECT * FROM lossreason`;
         dbRelay.DbQuery(selectTemplate, (error, results, fields) => {
             if (error) {
                 res.send(error);

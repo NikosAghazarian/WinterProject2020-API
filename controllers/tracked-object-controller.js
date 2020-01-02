@@ -7,11 +7,20 @@ export class TrackedObjectController {
 
     
     Create(req, res, next) {
+        /*req.query.rows
+            {
+                "rows": [
+                    {"name": "iron filament", "product": "screw", "qty": 5, "minyield": 0, "startqty": 7},
+                    {"name": "wood planks", "product": "wooden dowel", "qty": 2, "minyield": 0, "startqty": 4},
+                    ...
+                ]
+            }
+        */
         let rows = JSON.parse(req.query.rows).rows;
-        let insertTemplate = `INSERT INTO product (name) VALUES`;
+        let insertTemplate = `INSERT INTO trackedobject (name, product, qty, minyield, startqty) VALUES`;
 
-        rows.forEach((nameToAdd) => {
-            insertTemplate = insertTemplate.concat(` ('${nameToAdd}'),`);
+        rows.forEach((row) => {
+            insertTemplate = insertTemplate.concat(` ('${row.name}', '${row.product}', '${row.qty}', '${row.minyield}', '${row.startqty}'),`);
         });
         insertTemplate = insertTemplate.slice(0, -1);
 
@@ -28,7 +37,7 @@ export class TrackedObjectController {
     }
 
     Read(req, res, next) {
-        let selectTemplate = `SELECT * FROM product`;
+        let selectTemplate = `SELECT * FROM trackedobject`;
         dbRelay.DbQuery(selectTemplate, (error, results, fields) => {
             if (error) {
                 res.send(error);

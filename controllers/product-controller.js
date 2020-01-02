@@ -15,7 +15,6 @@ export class ProductController {
                     ...
                 ]
             }
-            
         */
         let rows = JSON.parse(req.query.rows).rows;
         let insertTemplate = `INSERT INTO product (name, expectedyield, minyield, ttl) VALUES`;
