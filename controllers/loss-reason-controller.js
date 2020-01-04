@@ -7,11 +7,11 @@ export class LossReasonController {
 
     
     Create(req, res, next) {
-        /*req.query.names
+        /*req.query.rows
             {
-                names: [
-                    "name1",
-                    "name2",
+                "rows": [
+                    {"name": "joe"},
+                    {"name": "dave"},
                     ...
                 ]
             }
@@ -19,8 +19,8 @@ export class LossReasonController {
         let rows = JSON.parse(req.query.rows).rows;
         let insertTemplate = `INSERT INTO lossreason (name) VALUES`;
 
-        rows.forEach((nameToAdd) => {
-            insertTemplate = insertTemplate.concat(` ('${nameToAdd}'),`);
+        rows.forEach((row) => {
+            insertTemplate = insertTemplate.concat(` ('${row.name}'),`);
         });
         insertTemplate = insertTemplate.slice(0, -1);
 
