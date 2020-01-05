@@ -8,15 +8,30 @@ export class QueryRelay {
     
     constructor() {}
 
+    isConnected = false;
+    connectionParams = {
+        host: ServerAuth.host,
+        database: ServerAuth.database,
+        user: ServerAuth.user,
+        password: ServerAuth.password
+    };
+    connection;
+
+
     DbQuery(query, queryCallback) {
-        const connection = mysql.createConnection({
-            host: ServerAuth.host,
-            database: ServerAuth.database,
-            user: ServerAuth.user,
-            password: ServerAuth.password
-        });
-        connection.connect();
-        connection.query(query, queryCallback);
-        connection.end();
+        if (this.isConnected === false) {
+            this.connection = mysql.createConnection(this.connectionParams);
+            this.isConnected = true;
+            this.connection.connect();
+        }
+        this.connection.query(query, queryCallback);
+        setTimeout(this.EndConnection, 10000);
+    }
+
+    EndConnection() {
+        if (this.isConnected === true) {
+            this.connection.end();
+            this.isConnected = false;
+        }
     }
 }

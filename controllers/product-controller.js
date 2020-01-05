@@ -50,13 +50,47 @@ export class ProductController {
     }
 
     Update(req, res, next) {
-        let updateTemplate = `UPDATE employee $SET_WHERE$`;
+        /*req.query.rows
+            {
+                "rows": [
+                    { "key": {"name": "screw"}, "newValue": {"expectedyield": 3, "minyield": 1, "ttl": 275} },
+                    { "key": {"name": "wooden dowel"}, "newValue": {"name": "wood rod"} },
+                    ...
+                ]
+            } 
+        */
+        let rows = JSON.parse(req.query.rows).rows;
+        let updateTemplate;
+        let targetPrimaryKey;
+        let targetPrimaryKeyValue;
+        let targetUpdateKeys;
 
-        let setWhereTemplate = `
-        SET 'name' = ${newVal} 
-        WHERE 'name' = ${originalVal}`;
-        
-        return setWhereTemplate;
+        rows.forEach((row) => {
+            updateTemplate = `UPDATE product SET`;
+
+            targetPrimaryKey = Object.getOwnPropertyNames(row.key)[0];
+            targetPrimaryKeyValue = row.key[targetPrimaryKey];
+
+            targetUpdateKeys = Object.getOwnPropertyNames(row.newValue);
+
+            targetUpdateKeys.forEach(key => {
+                updateTemplate = updateTemplate.concat(` ${key} = '${row.newValue[key]}',`);
+            });
+            updateTemplate = updateTemplate.slice(0, -1);
+            
+            updateTemplate = updateTemplate.concat(` WHERE ${targetPrimaryKey} = '${targetPrimaryKeyValue}';`);
+
+            dbRelay.DbQuery(updateTemplate, (error, results, fields) => {
+                if (error) {
+                   res.send(error);
+                   console.log(error);
+                }
+                else {
+                   console.log(results);
+                   res.send('Query OK');
+                }
+            });
+        });
     }
 
     Delete(req, res, next) {

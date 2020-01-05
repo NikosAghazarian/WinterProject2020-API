@@ -53,38 +53,44 @@ export class EmployeeController {
         /*req.query.rows
             {
                 "rows": [
-                    { "key": {"name": "joe"}, "newValue": {"name": joseph} },
-                    { "key": {"name": "dan"}, "newValue": {"name": daniel} },
+                    { "key": {"name": "joe"}, "newValue": {"name": "joseph"} },
+                    { "key": {"name": "dan"}, "newValue": {"name": "daniel"} },
                     ...
                 ]
             }
-            {
-                "rows": [
-                    { "key": {"name": "joe"}, "newValue": {"name": "joseph"} },
-                    { "key": {"name": "dan"}, "newValue": {"name": "daniel"} }
-                ]
-            }
         */
-        let rows = JSON.parse(req.query.rows).rows;
-        let updateTemplate = `UPDATE employee`;
+       let rows = JSON.parse(req.query.rows).rows;
+       let updateTemplate;
+       let targetPrimaryKey;
+       let targetPrimaryKeyValue;
+       let targetUpdateKeys;
 
-        rows.forEach((row) => {
-            let primaryKey = Object.getOwnPropertyNames(row.key)[0];
-            let primaryKeyValue = row.key[primaryKey];
-            updateTemplate = updateTemplate.concat(` (SET name = '${row.newValue.name}' WHERE ${primaryKey} = '${primaryKeyValue}') AND`);
-        });
-        updateTemplate = updateTemplate.slice(0, -4);
+       rows.forEach((row) => {
+           updateTemplate = `UPDATE employee SET`;
 
-        dbRelay.DbQuery(updateTemplate, (error, results, fields) => {
-            if (error) {
-                res.send(error);
-                console.log(error);
-            }
-            else {
-                console.log(results);
-                res.send('Query OK');
-            }
-        });
+           targetPrimaryKey = Object.getOwnPropertyNames(row.key)[0];
+           targetPrimaryKeyValue = row.key[targetPrimaryKey];
+
+           targetUpdateKeys = Object.getOwnPropertyNames(row.newValue);
+
+           targetUpdateKeys.forEach(key => {
+               updateTemplate = updateTemplate.concat(` ${key} = '${row.newValue[key]}',`);
+           });
+           updateTemplate = updateTemplate.slice(0, -1);
+           
+           updateTemplate = updateTemplate.concat(` WHERE ${targetPrimaryKey} = '${targetPrimaryKeyValue}';`);
+
+           dbRelay.DbQuery(updateTemplate, (error, results, fields) => {
+               if (error) {
+                  res.send(error);
+                  console.log(error);
+               }
+               else {
+                  console.log(results);
+                  res.send('Query OK');
+               }
+           });
+       });
     }
 
     Delete(req, res, next) {
