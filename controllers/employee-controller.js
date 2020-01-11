@@ -76,7 +76,7 @@ export class EmployeeController {
            targetUpdateKeys.forEach(key => {
                updateTemplate = updateTemplate.concat(` ${key} = '${row.newValue[key]}',`);
            });
-           updateTemplate = updateTemplate.slice(0, -1);
+           updateTemplate = updateTemplate.slice(0, -1); //cleans up last stray comma between set and where
            
            updateTemplate = updateTemplate.concat(` WHERE ${targetPrimaryKey} = '${targetPrimaryKeyValue}';`);
 
