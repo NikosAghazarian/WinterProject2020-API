@@ -8,27 +8,16 @@ export class LossReasonController {
     constructor() {}
 
     Create(req, res, next) {
-        /*req.query.rows
+        /*
             {
                 "rows": [
-                    {"name": "joe"},
-                    {"name": "dave"}
+                    {"name": "iron"},
+                    {"name": "boron"}
                 ]
             }
         */
-        
-        
         let insertTemplate = `INSERT INTO lossreason (name) VALUES ?;`;
 
-        /* let rows = req.body.rows;
-        let boundParams = [];
-        rows.forEach((row) => {
-            let rowArr = [];
-            for (let key in row) {
-                rowArr.push(row[key]);
-            }
-            boundParams.push(rowArr);
-        }); */
         let boundParams = Utils.CreationParse(req);
 
         dbRelay.DbQuery(insertTemplate, (error, results, fields) => {

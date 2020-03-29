@@ -1,4 +1,6 @@
 import { QueryRelay } from "../query-relay.js";
+import { Utils } from "./controller-util.js";
+
 let dbRelay = new QueryRelay();
 
 export class RscController {
@@ -7,22 +9,17 @@ export class RscController {
     
     
     Create(req, res, next) {
-        /*req.query.rows
+        /*
             {
                 "rows": [
                     {"name": "iron filament", "expectedyield": 1, "minyield": 0, "runsize": 50},
-                    {"name": "wood planks", "expectedyield": 5, "minyield": 0, "runsize": 20},
-                    ...
+                    {"name": "wood planks", "expectedyield": 5, "minyield": 0, "runsize": 20}
                 ]
             }
         */
-        let rows = JSON.parse(req.query.rows).rows;
-        let insertTemplate = `INSERT INTO rsc (name, expectedyield, minyield, runsize) VALUES`;
+        let insertTemplate = `INSERT INTO rsc (name, expectedyield, minyield, runsize) VALUES ?;`;
 
-        rows.forEach((row) => {
-            insertTemplate = insertTemplate.concat(` ('${row.name}', '${row.expectedyield}', '${row.minyield}', '${row.runsize}'),`);
-        });
-        insertTemplate = insertTemplate.slice(0, -1);
+        let boundParams = Utils.CreationParse(req);
 
         dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
             if (error) {
@@ -33,7 +30,7 @@ export class RscController {
                 console.log(results);
                 res.send('Query OK');
             }
-        });
+        }, boundParams);
     }
 
     Read(req, res, next) {

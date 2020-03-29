@@ -1,4 +1,6 @@
 import { QueryRelay } from "../query-relay.js";
+import { Utils } from "./controller-util.js";
+
 let dbRelay = new QueryRelay();
 
 export class TrackedObjectController {
@@ -7,22 +9,17 @@ export class TrackedObjectController {
 
     
     Create(req, res, next) {
-        /*req.query.rows
+        /*
             {
                 "rows": [
                     {"name": "iron filament", "product": "screw", "qty": 5, "minyield": 0, "startqty": 7},
-                    {"name": "wood planks", "product": "wooden dowel", "qty": 2, "minyield": 0, "startqty": 4},
-                    ...
+                    {"name": "wood planks", "product": "wooden dowel", "qty": 2, "minyield": 0, "startqty": 4}
                 ]
             }
         */
-        let rows = JSON.parse(req.query.rows).rows;
-        let insertTemplate = `INSERT INTO trackedobject (name, product, qty, minyield, startqty) VALUES`;
+        let insertTemplate = `INSERT INTO trackedobject (name, product, qty, minyield, startqty) VALUES ?;`;
 
-        rows.forEach((row) => {
-            insertTemplate = insertTemplate.concat(` ('${row.name}', '${row.product}', '${row.qty}', '${row.minyield}', '${row.startqty}'),`);
-        });
-        insertTemplate = insertTemplate.slice(0, -1);
+        let boundParams = Utils.CreationParse(req);
 
         dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
             if (error) {
@@ -33,7 +30,7 @@ export class TrackedObjectController {
                 console.log(results);
                 res.send('Query OK');
             }
-        });
+        }, boundParams);
     }
 
     Read(req, res, next) {

@@ -1,4 +1,6 @@
 import { QueryRelay } from "../query-relay.js";
+import { Utils } from "./controller-util.js";
+
 let dbRelay = new QueryRelay();
 
 export class TxnDataController {
@@ -11,18 +13,13 @@ export class TxnDataController {
             {
                 "rows": [
                     {"trackedobject": "iron filament", "timestamp": "2020-01-02 12:00:00", "rsc": "iron filament", "qtyin": 3, "qtyout": 2, "lossreason": "", "employee": "will", "txntype": "production"},
-                    {"trackedobject": "wood planks", "timestamp": "2020-01-02 11:00:00", "rsc": "wood planks", "qtyin": 2, "qtyout": 1, "lossreason": "", "employee": "miller", "txntype": "production"},
-                    ...
+                    {"trackedobject": "wood planks", "timestamp": "2020-01-02 11:00:00", "rsc": "wood planks", "qtyin": 2, "qtyout": 1, "lossreason": "", "employee": "miller", "txntype": "production"}
                 ]
             }
         */
-        let rows = JSON.parse(req.query.rows).rows;
-        let insertTemplate = `INSERT INTO txndata (trackedobject, timestamp, rsc, qtyin, qtyout, lossreason, employee, txntype) VALUES`;
+        let insertTemplate = `INSERT INTO txndata (trackedobject, timestamp, rsc, qtyin, qtyout, lossreason, employee, txntype) VALUES ?;`;
 
-        rows.forEach((row) => {
-            insertTemplate = insertTemplate.concat(` ('${row.trackedobject}', '${row.timestamp}', '${row.rsc}', '${row.qtyin}', '${row.qtyout}', '${row.lossreason}', '${row.employee}', '${row.txntype}'),`);
-        });
-        insertTemplate = insertTemplate.slice(0, -1);
+        let boundParams = Utils.CreationParse(req);
 
         dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
             if (error) {
@@ -33,7 +30,7 @@ export class TxnDataController {
                 console.log(results);
                 res.send('Query OK');
             }
-        });
+        }, boundParams);
     }
 
     Read(req, res, next) {

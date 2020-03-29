@@ -35,7 +35,7 @@ const txnDataRouter = Router();
 // Should have done this with POST, GET, PATCH, and DELETE
 docsRouter.get('/', DocsControllerInstance.DisplayDocs);
 
-rscRouter.get('/C/', RscControllerInstance.Create);
+rscRouter.post('/C/', RscControllerInstance.Create);
 rscRouter.get('/R/', RscControllerInstance.Read);
 rscRouter.get('/U/', RscControllerInstance.Update);
 rscRouter.get('/D/', RscControllerInstance.Delete);
@@ -50,17 +50,17 @@ lossReasonRouter.get('/R/', LossReasonControllerInstance.Read);
 lossReasonRouter.get('/U/', LossReasonControllerInstance.Update);
 lossReasonRouter.get('/D/', LossReasonControllerInstance.Delete);
 
-employeeRouter.get('/C/', EmployeeControllerInstance.Create);
+employeeRouter.post('/C/', EmployeeControllerInstance.Create);
 employeeRouter.get('/R/', EmployeeControllerInstance.Read);
 employeeRouter.get('/U/', EmployeeControllerInstance.Update);
 employeeRouter.get('/D/', EmployeeControllerInstance.Delete);
 
-trackedObjectRouter.get('/C/', TrackedObjectControllerInstance.Create);
+trackedObjectRouter.post('/C/', TrackedObjectControllerInstance.Create);
 trackedObjectRouter.get('/R/', TrackedObjectControllerInstance.Read);
 trackedObjectRouter.get('/U/', TrackedObjectControllerInstance.Update);
 trackedObjectRouter.get('/D/', TrackedObjectControllerInstance.Delete);
 
-txnDataRouter.get('/C/', TxnDataControllerInstance.Create);
+txnDataRouter.post('/C/', TxnDataControllerInstance.Create);
 txnDataRouter.get('/R/', TxnDataControllerInstance.Read);
 txnDataRouter.get('/U/', TxnDataControllerInstance.Update);
 txnDataRouter.get('/D/', TxnDataControllerInstance.Delete);
