@@ -16,8 +16,14 @@ export class QueryRelay {
         password: ServerAuth.password
     };
     connection;
+    callbackWaitFlag;
 
-
+    /**
+     * Queries the database for information requested from the API.
+     * 
+     * @param  {String} query
+     * @param  {Function} queryCallback
+     */
     DbQuery(query, queryCallback) {
         if (this.isConnected === false) {
             this.connection = mysql.createConnection(this.connectionParams);
@@ -25,13 +31,20 @@ export class QueryRelay {
             this.connection.connect();
         }
         this.connection.query(query, queryCallback);
-        setTimeout(this.EndConnection, 10000);
+        if (this.callbackWaitFlag === false) { //prevents buildup of callbacks
+            setTimeout(this.EndConnection, 10000);
+            this.callbackWaitFlag = true;
+        }
     }
-
+    /**
+     * Callback to end connection to DB after a duration
+     * to save on connection opening and closing cost.
+     */
     EndConnection() {
         if (this.isConnected === true) {
             this.connection.end();
             this.isConnected = false;
+            this.callbackWaitFlag = false;
         }
     }
 }

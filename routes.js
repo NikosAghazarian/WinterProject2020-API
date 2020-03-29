@@ -44,7 +44,8 @@ productRouter.get('/R/', ProductControllerInstance.Read);
 productRouter.get('/U/', ProductControllerInstance.Update);
 productRouter.get('/D/', ProductControllerInstance.Delete);
 
-lossReasonRouter.get('/C/', LossReasonControllerInstance.Create);
+//lossReasonRouter.get('/C/', LossReasonControllerInstance.Create);
+lossReasonRouter.post('/C/', LossReasonControllerInstance.Create);
 lossReasonRouter.get('/R/', LossReasonControllerInstance.Read);
 lossReasonRouter.get('/U/', LossReasonControllerInstance.Update);
 lossReasonRouter.get('/D/', LossReasonControllerInstance.Delete);
