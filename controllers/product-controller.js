@@ -11,12 +11,12 @@ export class ProductController {
             {
                 "rows": [
                     {"name": "screw", "expectedyield": 1, "minyield": 0, "ttl": 275},
-                    {"name": "wooden dowel", "expectedyield": 5, "minyield": 0, "ttl": 107},
-                    ...
+                    {"name": "wooden dowel", "expectedyield": 5, "minyield": 0, "ttl": 107}
                 ]
             }
         */
-        let rows = JSON.parse(req.query.rows).rows;
+        //let rows = JSON.parse(req.query.rows).rows;
+        let rows = req.body.rows;
         let insertTemplate = `INSERT INTO product (name, expectedyield, minyield, ttl) VALUES`;
 
         rows.forEach((row) => {

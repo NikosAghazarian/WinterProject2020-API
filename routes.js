@@ -14,6 +14,8 @@ import {
     TxnDataController
 } from "./controllers/index.js";
 
+//import * as ControllerSet from "./controllers/index.js";
+
 const DocsControllerInstance = new DocsController();
 const RscControllerInstance = new RscController();
 const ProductControllerInstance = new ProductController();
@@ -30,7 +32,6 @@ const employeeRouter = Router();
 const trackedObjectRouter = Router();
 const txnDataRouter = Router();
 
-
 // Should have done this with POST, GET, PATCH, and DELETE
 docsRouter.get('/', DocsControllerInstance.DisplayDocs);
 
@@ -39,12 +40,11 @@ rscRouter.get('/R/', RscControllerInstance.Read);
 rscRouter.get('/U/', RscControllerInstance.Update);
 rscRouter.get('/D/', RscControllerInstance.Delete);
 
-productRouter.get('/C/', ProductControllerInstance.Create);
+productRouter.post('/C/', ProductControllerInstance.Create);
 productRouter.get('/R/', ProductControllerInstance.Read);
 productRouter.get('/U/', ProductControllerInstance.Update);
 productRouter.get('/D/', ProductControllerInstance.Delete);
 
-//lossReasonRouter.get('/C/', LossReasonControllerInstance.Create);
 lossReasonRouter.post('/C/', LossReasonControllerInstance.Create);
 lossReasonRouter.get('/R/', LossReasonControllerInstance.Read);
 lossReasonRouter.get('/U/', LossReasonControllerInstance.Update);

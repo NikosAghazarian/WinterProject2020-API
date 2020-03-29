@@ -23,14 +23,20 @@ export class QueryRelay {
      * 
      * @param  {String} query
      * @param  {Function} queryCallback
+     * @param  {Array<Array<any>>} [params]
      */
-    DbQuery(query, queryCallback) {
+    DbQuery(query, queryCallback, params) {
         if (this.isConnected === false) {
             this.connection = mysql.createConnection(this.connectionParams);
             this.isConnected = true;
             this.connection.connect();
         }
-        this.connection.query(query, queryCallback);
+        if (params) {
+            this.connection.query(query, [params], queryCallback);
+        }
+        else {
+            this.connection.query(query, queryCallback);
+        }
         if (this.callbackWaitFlag === false) { //prevents buildup of callbacks
             setTimeout(this.EndConnection, 10000);
             this.callbackWaitFlag = true;

@@ -1,28 +1,35 @@
 import { QueryRelay } from "../query-relay.js";
+import { Utils } from "./controller-util.js";
+
 let dbRelay = new QueryRelay();
 
 export class LossReasonController {
 
     constructor() {}
 
-    
     Create(req, res, next) {
         /*req.query.rows
             {
                 "rows": [
                     {"name": "joe"},
-                    {"name": "dave"},
-                    ...
+                    {"name": "dave"}
                 ]
             }
         */
-        let rows = JSON.parse(req.query.rows).rows;
-        let insertTemplate = `INSERT INTO lossreason (name) VALUES`;
+        
+        
+        let insertTemplate = `INSERT INTO lossreason (name) VALUES ?;`;
 
+        /* let rows = req.body.rows;
+        let boundParams = [];
         rows.forEach((row) => {
-            insertTemplate = insertTemplate.concat(` ('${row.name}'),`);
-        });
-        insertTemplate = insertTemplate.slice(0, -1);
+            let rowArr = [];
+            for (let key in row) {
+                rowArr.push(row[key]);
+            }
+            boundParams.push(rowArr);
+        }); */
+        let boundParams = Utils.CreationParse(req);
 
         dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
             if (error) {
@@ -33,7 +40,7 @@ export class LossReasonController {
                 console.log(results);
                 res.send('Query OK');
             }
-        });
+        }, boundParams);
     }
 
     Read(req, res, next) {

@@ -16,7 +16,8 @@ export class EmployeeController {
                 ]
             }
         */
-        let rows = JSON.parse(req.query.rows).rows;
+        //let rows = JSON.parse(req.query.rows).rows;
+        let rows = req.body.rows;
         let insertTemplate = `INSERT INTO employee (name) VALUES`;
         
         rows.forEach((row) => {

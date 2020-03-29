@@ -1,6 +1,8 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url)
 const express = require('express');
+const bodyParser = require('body-parser');
+
 
 import { Routes } from "./routes.js";
 
@@ -16,6 +18,8 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+app.use(bodyParser());
+/* app.use((req, res, next) => req.body.rows); // doesnt work*/
 app.use('/rsc', RoutesInstance.rsc);
 app.use('/product', RoutesInstance.product);
 app.use('/lossreason', RoutesInstance.lossReason);
