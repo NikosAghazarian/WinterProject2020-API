@@ -1,52 +1,45 @@
-import { QueryRelay } from "../query-relay.js";
-import { Utils } from "./controller-util.js";
+import { QueryRelay } from '../query-relay.js';
+import { Utils } from './controller-util.js';
 
-let dbRelay = new QueryRelay();
+const dbRelay = new QueryRelay();
 
 export class LossReasonController {
 
     constructor() {}
 
-    Create(req, res, next) {
-        /*
-            {
-                "rows": [
-                    {"name": "iron"},
-                    {"name": "boron"}
-                ]
-            }
-        */
-        let insertTemplate = `INSERT INTO lossreason (name) VALUES ?;`;
+    Create(req, res) {
+        /**
+         *  {'rows': [{'name': 'iron'}, {'name': 'boron'}]}
+         */
+        const insertTemplate = `INSERT INTO lossreason (name) VALUES ?;`;
 
-        let boundParams = Utils.CreationParse(req);
+        const boundParams = Utils.CreationParse(req);
 
-        dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
+        dbRelay.DbQuery(insertTemplate, (error, results) => {
             if (error) {
                 res.send(error);
                 console.log(error);
-            }
-            else {
+            } else {
                 console.log(results);
                 res.send('Query OK');
             }
         }, boundParams);
     }
 
-    Read(req, res, next) {
-        let selectTemplate = `SELECT * FROM lossreason`;
-        dbRelay.DbQuery(selectTemplate, (error, results, fields) => {
+    Read(req, res) {
+        const selectTemplate = `SELECT * FROM lossreason`;
+        dbRelay.DbQuery(selectTemplate, (error, results) => {
             if (error) {
                 res.send(error);
                 console.log(error);
-            }
-            else {
+            } else {
                 res.send(results);
             }
         });
     }
 
-    Update(req, res, next) {
-        let rows = JSON.parse(req.query.rows).rows;
+    Update(req, res) {
+        const rows = JSON.parse(req.query.rows).rows;
         let updateTemplate;
         let targetPrimaryKey;
         let targetPrimaryKeyValue;
@@ -60,27 +53,28 @@ export class LossReasonController {
 
             targetUpdateKeys = Object.getOwnPropertyNames(row.newValue);
 
-            targetUpdateKeys.forEach(key => {
+            targetUpdateKeys.forEach((key) => {
                 updateTemplate = updateTemplate.concat(` ${key} = '${row.newValue[key]}',`);
             });
             updateTemplate = updateTemplate.slice(0, -1);
             
             updateTemplate = updateTemplate.concat(` WHERE ${targetPrimaryKey} = '${targetPrimaryKeyValue}';`);
 
-            dbRelay.DbQuery(updateTemplate, (error, results, fields) => {
+            dbRelay.DbQuery(updateTemplate, (error, results) => {
                 if (error) {
-                   res.send(error);
-                   console.log(error);
-                }
-                else {
-                   console.log(results);
-                   res.send('Query OK');
+                    res.send(error);
+                    console.log(error);
+                } else {
+                    console.log(results);
+                    res.send('Query OK');
                 }
             });
         });
     }
 
     Delete(req, res, next) {
-        
+        req;
+        res;
+        next;
     }
 }

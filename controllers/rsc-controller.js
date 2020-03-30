@@ -1,53 +1,51 @@
-import { QueryRelay } from "../query-relay.js";
-import { Utils } from "./controller-util.js";
+import { QueryRelay } from '../query-relay.js';
+import { Utils } from './controller-util.js';
 
-let dbRelay = new QueryRelay();
+const dbRelay = new QueryRelay();
 
 export class RscController {
 
     constructor() {}
     
     
-    Create(req, res, next) {
+    Create(req, res) {
         /*
-            {
-                "rows": [
-                    {"name": "iron filament", "expectedyield": 1, "minyield": 0, "runsize": 50},
-                    {"name": "wood planks", "expectedyield": 5, "minyield": 0, "runsize": 20}
-                ]
-            }
-        */
-        let insertTemplate = `INSERT INTO rsc (name, expectedyield, minyield, runsize) VALUES ?;`;
+         *{
+         *    'rows': [
+         *        {'name': 'iron filament', 'expectedyield': 1, 'minyield': 0, 'runsize': 50},
+         *        {'name': 'wood planks', 'expectedyield': 5, 'minyield': 0, 'runsize': 20}
+         *    ]
+         *}
+         */
+        const insertTemplate = `INSERT INTO rsc (name, expectedyield, minyield, runsize) VALUES ?;`;
 
-        let boundParams = Utils.CreationParse(req);
+        const boundParams = Utils.CreationParse(req);
 
-        dbRelay.DbQuery(insertTemplate, (error, results, fields) => {
+        dbRelay.DbQuery(insertTemplate, (error, results) => {
             if (error) {
                 res.send(error);
                 console.log(error);
-            }
-            else {
+            } else {
                 console.log(results);
                 res.send('Query OK');
             }
         }, boundParams);
     }
 
-    Read(req, res, next) {
-        let selectTemplate = `SELECT * FROM rsc`;
-        dbRelay.DbQuery(selectTemplate, (error, results, fields) => {
+    Read(res) {
+        const selectTemplate = `SELECT * FROM rsc`;
+        dbRelay.DbQuery(selectTemplate, (error, results) => {
             if (error) {
                 res.send(error);
                 console.log(error);
-            }
-            else {
+            } else {
                 res.send(results);
             }
         });
     }
 
-    Update(req, res, next) {
-        let rows = JSON.parse(req.query.rows).rows;
+    Update(req, res) {
+        const rows = JSON.parse(req.query.rows).rows;
         let updateTemplate;
         let targetPrimaryKey;
         let targetPrimaryKeyValue;
@@ -61,27 +59,26 @@ export class RscController {
 
             targetUpdateKeys = Object.getOwnPropertyNames(row.newValue);
 
-            targetUpdateKeys.forEach(key => {
+            targetUpdateKeys.forEach((key) => {
                 updateTemplate = updateTemplate.concat(` ${key} = '${row.newValue[key]}',`);
             });
             updateTemplate = updateTemplate.slice(0, -1);
             
             updateTemplate = updateTemplate.concat(` WHERE ${targetPrimaryKey} = '${targetPrimaryKeyValue}';`);
 
-            dbRelay.DbQuery(updateTemplate, (error, results, fields) => {
+            dbRelay.DbQuery(updateTemplate, (error, results) => {
                 if (error) {
-                   res.send(error);
-                   console.log(error);
-                }
-                else {
-                   console.log(results);
-                   res.send('Query OK');
+                    res.send(error);
+                    console.log(error);
+                } else {
+                    console.log(results);
+                    res.send('Query OK');
                 }
             });
         });
     }
 
-    Delete(req, res, next) {
+    Delete() {
         
     }
 }

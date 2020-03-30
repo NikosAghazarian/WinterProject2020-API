@@ -1,0 +1,86 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "parser": "babel-eslint",
+    "extends": "eslint:recommended",
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "quotes": [
+            "error",
+            "single",
+            { "allowTemplateLiterals": true }
+        ],
+        "quote-props": [
+            "error",
+            "always"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-dupe-else-if": "error",
+        "no-irregular-whitespace": "error",
+        "no-unreachable": "error",
+        "no-template-curly-in-string": "error",
+        "valid-typeof": "error",
+        "valid-jsdoc":"error",
+        "eqeqeq": "error",
+        "dot-notation": [
+            "error",
+            { "allowKeywords": false }
+        ],
+        "no-self-compare": "error",
+        "no-self-assign": "error",
+        "brace-style": "error",
+        "comma-spacing": [
+            "error",
+            { "before": false, "after": true }
+        ],
+        "comma-style": "error",
+        "curly": "error",
+        "capitalized-comments": "error",
+        "max-len": [
+            "error",
+            { "code": 140 }
+        ],
+        "multiline-comment-style": [
+            "error",
+            "starred-block"
+        ],
+        "semi-style": [
+            "error",
+            "last"
+        ],
+        "semi-spacing": [
+            "error",
+            { "before": false, "after": true }
+        ],
+        "arrow-parens": "error",
+        "arrow-body-style": "error",
+        "no-const-assign": "error",
+        "no-var": "error",
+        "arrow-spacing": [
+            "error",
+            { "before": true, "after": true }
+        ],
+        "prefer-arrow-callback": "error",
+        "prefer-const": "error",
+        "prefer-template": "error",
+        "no-restricted-imports": "error",
+        "no-restricted-modules": "error"
+    }
+}

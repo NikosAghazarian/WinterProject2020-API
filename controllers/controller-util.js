@@ -1,10 +1,11 @@
 export class Utils {
     static CreationParse(req,) {
-        let rows = req.body.rows;
-        let boundParams = [];
+        const rows = req.body.rows;
+        const boundParams = [];
         rows.forEach((row) => {
-            let rowArr = [];
-            for (let key in row) {
+            const rowArr = [];
+            let key;
+            for (key in row) {
                 rowArr.push(row[key]);
             }
             boundParams.push(rowArr);

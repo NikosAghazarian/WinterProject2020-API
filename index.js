@@ -1,10 +1,12 @@
-import { createRequire } from "module";
+import { createRequire } from 'module';
 const require = createRequire(import.meta.url)
 const express = require('express');
 const bodyParser = require('body-parser');
+const winston = require('winston');
 
+InitializeLogging();
 
-import { Routes } from "./routes.js";
+import { Routes } from './routes.js';
 
 const RoutesInstance = new Routes();
 
@@ -14,8 +16,8 @@ let hostAddr = 'localhost'
 
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:4200"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200'); // update to match the domain you will make the request from
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
 app.use(bodyParser());
@@ -31,3 +33,20 @@ app.use('/', RoutesInstance.docs);
 
 app.listen(port, hostAddr);
 console.log('Express app listening on ' + hostAddr + ':' + port);
+
+function InitializeLogging() {
+    const logger = winston.createLogger({
+        level: 'info',
+        format: winston.format.json(),
+        defaultMeta: { service: 'user-service' },
+        transports: [
+            // - Write to all logs with level `info` and below to `combined.log` 
+            // - Write all logs error (and below) to `error.log`.
+            new winston.transports.Console({ format: winston.format.simple() }),
+            new winston.transports.File({ filename: './logs/exceptions.log', level: 'error' }),
+            new winston.transports.File({ filename: './logs/stdout.log' })
+        ]
+    });
+    logger.exceptions.handle( new winston.transports.File({ filename: './logs/exceptions.log' }));
+    return logger;
+}
