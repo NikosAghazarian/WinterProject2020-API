@@ -1,3 +1,5 @@
+
+Personal Note:
 {
     "host": "Nikos-Desktop",
     "database": "winterproject2020",
